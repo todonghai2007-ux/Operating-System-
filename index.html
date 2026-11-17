@@ -679,6 +679,8 @@
     flex-wrap: wrap;
     gap: 6px;
     margin-top: 6px;
+    max-height: 150px;
+    overflow-y: auto;
   }
   .ai-preset-row button {
     font-size: 0.76rem;
@@ -2078,6 +2080,27 @@ document.getElementById("btnTestAiConfig").onclick = async () => {
   }
 };
 
+function scoreGeminiModel(name) {
+  const n = name.toLowerCase();
+  if (/^gemini-4/.test(n)) return 5000 + (/hydrogen/.test(n) ? 50 : 0) + (/pro/.test(n) ? 80 : 0);
+  const m3 = n.match(/^gemini-3(?:\.(\d+))?/);
+  if (m3) {
+    const minor = parseInt(m3[1] || "0", 10);
+    const tier = /pro/.test(n) ? 30 : (/flash-lite/.test(n) ? 10 : 20);
+    const stable = /preview/.test(n) ? 0 : 5;
+    return 4000 + minor * 50 + tier + stable;
+  }
+  if (/^gemini-.*-latest$/.test(n)) {
+    return 3000 + (/pro/.test(n) ? 30 : (/flash-lite/.test(n) ? 10 : 20));
+  }
+  if (/^gemini-2\.5/.test(n)) {
+    return 2000 + (/pro/.test(n) ? 30 : (/flash-lite/.test(n) ? 10 : 20));
+  }
+  if (/^gemini-/.test(n)) return 1000;
+  if (/^gemma-/.test(n)) return 500;
+  return 100;
+}
+
 document.getElementById("btnFetchModels").onclick = async () => {
   const cfg = readAiSettingsForm();
   const fb = document.getElementById("aiSettingsFeedback");
@@ -2096,13 +2119,24 @@ document.getElementById("btnFetchModels").onclick = async () => {
   try {
     let models = [];
     if (cfg.provider === "gemini") {
-      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(cfg.apiKey)}`);
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data?.error?.message || `HTTP ${res.status}`);
-      models = (data.models || [])
+      let pageToken = "";
+      let allItems = [];
+      for (let page = 0; page < 5; page++) {
+        const qs = new URLSearchParams({ pageSize: "200", key: cfg.apiKey });
+        if (pageToken) qs.set("pageToken", pageToken);
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?${qs.toString()}`);
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data?.error?.message || `HTTP ${res.status}`);
+        allItems = allItems.concat(data.models || []);
+        if (!data.nextPageToken) break;
+        pageToken = data.nextPageToken;
+      }
+      const skipRe = /(-tts|-image|imagen|veo|lyria|robotics|computer-use|native-audio|deep-research|embedding|aqa)/i;
+      models = allItems
         .filter(m => (m.supportedGenerationMethods || []).includes("generateContent"))
         .map(m => String(m.name || "").replace(/^models\//, ""))
-        .filter(Boolean);
+        .filter(id => id && !skipRe.test(id))
+        .sort((a, b) => scoreGeminiModel(b) - scoreGeminiModel(a) || a.localeCompare(b));
     } else if (cfg.provider === "openai") {
       const base = (cfg.baseUrl || AI_DEFAULTS.openai.baseUrl).replace(/\/+$/, "");
       const res = await fetch(`${base}/models`, {
@@ -2110,7 +2144,7 @@ document.getElementById("btnFetchModels").onclick = async () => {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(data?.error?.message || `HTTP ${res.status}`);
-      models = (data.data || []).map(m => m.id).filter(Boolean).slice(0, 12);
+      models = (data.data || []).map(m => m.id).filter(Boolean).slice(0, 30);
     } else if (cfg.provider === "ollama") {
       const base = (cfg.baseUrl || AI_DEFAULTS.ollama.baseUrl).replace(/\/+$/, "");
       const res = await fetch(`${base}/api/tags`);
@@ -2121,7 +2155,7 @@ document.getElementById("btnFetchModels").onclick = async () => {
 
     if (!models.length) throw new Error("Không tìm thấy model phù hợp.");
     presetBox.innerHTML = "";
-    models.slice(0, 10).forEach(m => {
+    models.forEach(m => {
       const b = document.createElement("button");
       b.type = "button";
       b.textContent = m;
@@ -2129,7 +2163,7 @@ document.getElementById("btnFetchModels").onclick = async () => {
       presetBox.appendChild(b);
     });
     fb.style.color = "var(--success)";
-    fb.textContent = `✔ Đã tải ${models.length} model. Hãy bấm chọn 1 nút phía trên hoặc kiểm tra kết nối.`;
+    fb.textContent = `✔ Đã tải ${models.length} model chat (đã xếp model mới nhất lên đầu). Hãy bấm chọn 1 model hoặc kiểm tra kết nối.`;
   } catch (err) {
     fb.style.color = "var(--danger)";
     fb.textContent = `✘ Không tải được danh sách model: ${err.message}`;
