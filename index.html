@@ -894,13 +894,16 @@
         <div class="ai-preset-row" id="aiUrlPresets">
           <button type="button" data-url="https://api.openai.com/v1" data-model="gpt-4o-mini">OpenAI</button>
           <button type="button" data-url="https://api.groq.com/openai/v1" data-model="llama-3.3-70b-versatile">Groq</button>
-          <button type="button" data-url="https://openrouter.ai/api/v1" data-model="google/gemini-2.5-flash">OpenRouter</button>
+          <button type="button" data-url="https://openrouter.ai/api/v1" data-model="google/gemini-3-flash-preview">OpenRouter</button>
           <button type="button" data-url="https://api.deepseek.com/v1" data-model="deepseek-chat">DeepSeek</button>
         </div>
       </div>
       <div class="control-group">
         <label for="aiModel">Model</label>
-        <input type="text" id="aiModel" placeholder="gemini-2.5-flash" />
+        <div style="display:flex;gap:6px;">
+          <input type="text" id="aiModel" placeholder="gemini-3.8-flash" />
+          <button type="button" id="btnFetchModels" title="Lấy danh sách model khả dụng từ API Key">🔄 Tải DS model</button>
+        </div>
         <div class="ai-preset-row" id="aiModelPresets"></div>
       </div>
       <div class="control-group" id="aiApiKeyGroup">
@@ -1493,12 +1496,16 @@ document.addEventListener("keydown", e => {
 // ================= AI INTEGRATION =================
 const AI_CONFIG_KEY = "nlhdh_ai_config_v1";
 const AI_DEFAULTS = {
-  gemini: { baseUrl: "", model: "gemini-2.5-flash", presets: ["gemini-2.5-flash", "gemini-2.5-pro", "gemini-2.0-flash"] },
+  gemini: {
+    baseUrl: "",
+    model: "gemini-3.8-flash",
+    presets: ["gemini-4-hydrogen", "gemini-3.8-flash", "gemini-3.1-pro-preview", "gemini-3-flash-preview"]
+  },
   openai: { baseUrl: "https://api.openai.com/v1", model: "gpt-4o-mini", presets: ["gpt-4o-mini", "llama-3.3-70b-versatile", "deepseek-chat"] },
   ollama: { baseUrl: "http://localhost:11434", model: "llama3.2", presets: ["llama3.2", "qwen2.5:7b", "gemma2"] }
 };
 
-let aiConfig = { provider: "gemini", baseUrl: "", model: "gemini-2.5-flash", apiKey: "" };
+let aiConfig = { provider: "gemini", baseUrl: "", model: "gemini-3.8-flash", apiKey: "" };
 state.aiExplainCache = {};
 state.aiChatHistory = [];
 state.aiChatBusy = false;
@@ -2071,9 +2078,67 @@ document.getElementById("btnTestAiConfig").onclick = async () => {
   }
 };
 
+document.getElementById("btnFetchModels").onclick = async () => {
+  const cfg = readAiSettingsForm();
+  const fb = document.getElementById("aiSettingsFeedback");
+  const presetBox = document.getElementById("aiModelPresets");
+  const modelInput = document.getElementById("aiModel");
+
+  if (cfg.provider !== "ollama" && !cfg.apiKey) {
+    fb.style.color = "var(--warning)";
+    fb.textContent = "Hãy nhập API Key trước rồi bấm Tải DS model.";
+    return;
+  }
+
+  fb.style.color = "var(--text-muted)";
+  fb.textContent = "⏳ Đang tải danh sách model khả dụng...";
+
+  try {
+    let models = [];
+    if (cfg.provider === "gemini") {
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${encodeURIComponent(cfg.apiKey)}`);
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data?.error?.message || `HTTP ${res.status}`);
+      models = (data.models || [])
+        .filter(m => (m.supportedGenerationMethods || []).includes("generateContent"))
+        .map(m => String(m.name || "").replace(/^models\//, ""))
+        .filter(Boolean);
+    } else if (cfg.provider === "openai") {
+      const base = (cfg.baseUrl || AI_DEFAULTS.openai.baseUrl).replace(/\/+$/, "");
+      const res = await fetch(`${base}/models`, {
+        headers: { "Authorization": `Bearer ${cfg.apiKey}` }
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(data?.error?.message || `HTTP ${res.status}`);
+      models = (data.data || []).map(m => m.id).filter(Boolean).slice(0, 12);
+    } else if (cfg.provider === "ollama") {
+      const base = (cfg.baseUrl || AI_DEFAULTS.ollama.baseUrl).replace(/\/+$/, "");
+      const res = await fetch(`${base}/api/tags`);
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      models = (data.models || []).map(m => m.name).filter(Boolean);
+    }
+
+    if (!models.length) throw new Error("Không tìm thấy model phù hợp.");
+    presetBox.innerHTML = "";
+    models.slice(0, 10).forEach(m => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.textContent = m;
+      b.onclick = () => { modelInput.value = m; };
+      presetBox.appendChild(b);
+    });
+    fb.style.color = "var(--success)";
+    fb.textContent = `✔ Đã tải ${models.length} model. Hãy bấm chọn 1 nút phía trên hoặc kiểm tra kết nối.`;
+  } catch (err) {
+    fb.style.color = "var(--danger)";
+    fb.textContent = `✘ Không tải được danh sách model: ${err.message}`;
+  }
+};
+
 document.getElementById("btnClearAiConfig").onclick = () => {
   localStorage.removeItem(AI_CONFIG_KEY);
-  aiConfig = { provider: "gemini", baseUrl: "", model: "gemini-2.5-flash", apiKey: "" };
+  aiConfig = { provider: "gemini", baseUrl: "", model: "gemini-3.8-flash", apiKey: "" };
   document.getElementById("aiApiKey").value = "";
   updateAiStatusUI();
   const fb = document.getElementById("aiSettingsFeedback");
