@@ -1340,7 +1340,7 @@ function checkPracticeQuestion(q) {
   updateStats();
   renderQuestion();
   renderNav();
-  if (isAutoAiExplainEnabled() && isAiConfigured()) {
+  if (isAutoAiExplainEnabled()) {
     explainCurrentQuestion(false, { silentIfUnconfigured: true });
   }
 }
@@ -1400,7 +1400,7 @@ document.getElementById("btnRevealFlash").onclick = () => {
   if (!q) return;
   state.practiceRevealed[q.id] = true;
   renderQuestion();
-  if (isAutoAiExplainEnabled() && isAiConfigured()) {
+  if (isAutoAiExplainEnabled()) {
     explainCurrentQuestion(false, { silentIfUnconfigured: true });
   }
 };
@@ -1839,6 +1839,11 @@ async function explainCurrentQuestion(forceRefresh = false, { silentIfUnconfigur
   if (!isAiConfigured()) {
     if (!silentIfUnconfigured) {
       openAiSettingsModal("Vui lòng nhập API Key (hoặc cấu hình Ollama) trước khi dùng tính năng AI.");
+    } else {
+      const box = document.getElementById("aiExplainBox");
+      box.style.display = "block";
+      box.innerHTML = `<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;"><span>⚠️ Chưa có API Key AI trên trang này (chấm cạnh <strong>Cài đặt AI</strong> đang màu xám) nên AI chưa thể tự động giải.</span><button type="button" class="primary" id="btnAiQuickSetup">⚙️ Nhập API Key ngay</button></div>`;
+      document.getElementById("btnAiQuickSetup").onclick = () => openAiSettingsModal("Vui lòng nhập API Key (hoặc cấu hình Ollama) rồi bấm Lưu cài đặt.");
     }
     return;
   }
