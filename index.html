@@ -6,64 +6,99 @@
 <title>Luyện tập Trắc nghiệm Nguyên lý Hệ điều hành (238 câu)</title>
 <style>
   :root {
-    --bg: #f1f5f9;
+    --bg: #f3f6fb;
     --surface: #ffffff;
     --surface-2: #f8fafc;
+    --surface-hover: #f1f5f9;
     --text: #0f172a;
-    --text-muted: #475569;
-    --border: #cbd5e1;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --border-strong: #cbd5e1;
     --primary: #2563eb;
     --primary-hover: #1d4ed8;
     --primary-soft: #eff6ff;
+    --primary-ring: rgba(37, 99, 235, 0.18);
+    --accent: #4f46e5;
     --success: #16a34a;
     --success-soft: #f0fdf4;
+    --success-border: #86efac;
     --danger: #dc2626;
     --danger-soft: #fef2f2;
+    --danger-border: #fca5a5;
     --warning: #d97706;
     --warning-soft: #fffbeb;
-    --code-bg: #f1f5f9;
-    --code-fg: #b91c1c;
-    --shadow: 0 4px 16px rgba(15, 23, 42, 0.06);
+    --warning-border: #fcd34d;
+    --code-bg: #eef2ff;
+    --code-fg: #3730a3;
+    --header-bg: rgba(255, 255, 255, 0.86);
+    --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.05), 0 1px 2px rgba(15, 23, 42, 0.03);
+    --shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.08), 0 4px 10px -4px rgba(15, 23, 42, 0.04);
+    --radius: 16px;
   }
+
   [data-theme="dark"] {
-    --bg: #0f172a;
-    --surface: #1e293b;
-    --surface-2: #0f172a;
+    --bg: #0b1120;
+    --surface: #131c31;
+    --surface-2: #19243d;
+    --surface-hover: #212f4d;
     --text: #f1f5f9;
     --text-muted: #94a3b8;
-    --border: #334155;
+    --border: #24324d;
+    --border-strong: #334569;
     --primary: #3b82f6;
     --primary-hover: #60a5fa;
-    --primary-soft: rgba(59, 130, 246, 0.15);
+    --primary-soft: rgba(59, 130, 246, 0.16);
+    --primary-ring: rgba(59, 130, 246, 0.25);
+    --accent: #818cf8;
     --success: #22c55e;
     --success-soft: rgba(34, 197, 94, 0.14);
-    --danger: #ef4444;
-    --danger-soft: rgba(239, 68, 68, 0.14);
-    --warning: #f59e0b;
+    --success-border: rgba(34, 197, 94, 0.45);
+    --danger: #f87171;
+    --danger-soft: rgba(239, 68, 68, 0.15);
+    --danger-border: rgba(239, 68, 68, 0.45);
+    --warning: #fbbf24;
     --warning-soft: rgba(245, 158, 11, 0.14);
-    --code-bg: #0f172a;
-    --code-fg: #fca5a5;
-    --shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+    --warning-border: rgba(245, 158, 11, 0.4);
+    --code-bg: #1e293b;
+    --code-fg: #a5b4fc;
+    --header-bg: rgba(19, 28, 49, 0.86);
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+    --shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.45);
   }
+
   * { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
   body {
     margin: 0;
-    font-family: "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+    font-family: "Inter", "Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
     background: var(--bg);
     color: var(--text);
-    line-height: 1.55;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
+
+  /* Custom subtle scrollbars */
+  ::-webkit-scrollbar { width: 7px; height: 7px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 999px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+  /* Header */
   header {
-    background: var(--surface);
+    background: var(--header-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
     position: sticky;
     top: 0;
     z-index: 30;
-    padding: 10px 20px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    padding: 12px 20px;
   }
   .header-inner {
-    max-width: 1200px;
+    max-width: 1260px;
     margin: 0 auto;
     display: flex;
     flex-wrap: wrap;
@@ -74,20 +109,50 @@
   .brand {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
+  }
+  .brand-icon {
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.28);
+    flex-shrink: 0;
+  }
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+  .brand-title-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
   }
   .brand h1 {
     margin: 0;
-    font-size: 1.15rem;
+    font-size: 1.08rem;
     font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+  .brand-sub {
+    font-size: 0.78rem;
+    color: var(--text-muted);
   }
   .brand .badge {
     background: var(--primary-soft);
     color: var(--primary);
-    font-size: 0.78rem;
-    font-weight: 600;
-    padding: 3px 9px;
+    font-size: 0.74rem;
+    font-weight: 700;
+    padding: 2px 9px;
     border-radius: 999px;
+    border: 1px solid rgba(37, 99, 235, 0.15);
   }
   .header-actions {
     display: flex;
@@ -95,238 +160,440 @@
     gap: 8px;
     flex-wrap: wrap;
   }
+
+  /* Buttons */
   button {
     font-family: inherit;
     cursor: pointer;
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-strong);
     background: var(--surface);
     color: var(--text);
-    padding: 7px 13px;
-    border-radius: 8px;
-    font-size: 0.9rem;
-    font-weight: 500;
-    transition: all 0.15s ease;
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.16s ease;
   }
-  button:hover { border-color: var(--primary); color: var(--primary); }
+  button:hover:not(:disabled) {
+    border-color: var(--primary);
+    color: var(--primary);
+    background: var(--surface-2);
+  }
+  button:active:not(:disabled) { transform: translateY(1px); }
   button.primary {
     background: var(--primary);
     color: #fff;
     border-color: var(--primary);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.22);
   }
-  button.primary:hover { background: var(--primary-hover); color: #fff; }
+  button.primary:hover:not(:disabled) {
+    background: var(--primary-hover);
+    border-color: var(--primary-hover);
+    color: #fff;
+  }
   button.success {
     background: var(--success);
     color: #fff;
     border-color: var(--success);
   }
-  button.danger-outline { color: var(--danger); border-color: var(--danger); }
-  button.danger-outline:hover { background: var(--danger-soft); }
+  button.success:hover:not(:disabled) {
+    filter: brightness(0.95);
+    color: #fff;
+  }
+  button.danger-outline {
+    color: var(--danger);
+    border-color: var(--danger-border);
+    background: transparent;
+  }
+  button.danger-outline:hover:not(:disabled) {
+    background: var(--danger-soft);
+    border-color: var(--danger);
+    color: var(--danger);
+  }
   button:disabled { opacity: 0.45; cursor: not-allowed; }
 
+  /* Layout */
   .container {
-    max-width: 1200px;
-    margin: 18px auto;
-    padding: 0 16px 40px;
+    max-width: 1260px;
+    margin: 24px auto;
+    padding: 0 20px 48px;
     display: grid;
-    grid-template-columns: 300px 1fr;
-    gap: 18px;
+    grid-template-columns: 320px 1fr;
+    gap: 22px;
     align-items: start;
   }
-  @media (max-width: 920px) {
-    .container { grid-template-columns: 1fr; }
+  @media (max-width: 960px) {
+    .container { grid-template-columns: 1fr; margin-top: 16px; padding: 0 14px 36px; gap: 16px; }
   }
 
   .card {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 12px;
-    padding: 16px;
+    border-radius: var(--radius);
+    padding: 18px;
     box-shadow: var(--shadow);
   }
-  .sidebar { display: flex; flex-direction: column; gap: 14px; }
+
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .section-title {
+    font-size: 0.86rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-muted);
+    margin: 0 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* Stats */
   .stat-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 8px;
-    margin-top: 8px;
+    gap: 10px;
   }
   .stat-box {
     background: var(--surface-2);
     border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 8px 10px;
+    border-radius: 12px;
+    padding: 10px 12px;
     text-align: center;
+    transition: border-color 0.15s ease;
   }
-  .stat-val { font-size: 1.2rem; font-weight: 700; color: var(--primary); }
-  .stat-lbl { font-size: 0.76rem; color: var(--text-muted); }
+  .stat-box:hover { border-color: var(--border-strong); }
+  .stat-val {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1.25;
+  }
+  .stat-lbl {
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+    font-weight: 500;
+  }
 
-  .control-group { margin-bottom: 11px; }
+  /* Controls */
+  .control-group { margin-bottom: 12px; }
   .control-group label {
     display: block;
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     font-weight: 600;
     color: var(--text-muted);
-    margin-bottom: 4px;
+    margin-bottom: 5px;
   }
   select, input[type="text"] {
     width: 100%;
-    padding: 8px 10px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
+    padding: 9px 12px;
+    border-radius: 10px;
+    border: 1px solid var(--border-strong);
     background: var(--surface-2);
     color: var(--text);
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     font-family: inherit;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+  select:focus, input[type="text"]:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-ring);
+    background: var(--surface);
   }
   .checkbox-row {
     display: flex;
     align-items: center;
-    gap: 8px;
-    font-size: 0.88rem;
-    margin: 5px 0;
+    gap: 9px;
+    font-size: 0.87rem;
+    margin: 7px 0;
+    cursor: pointer;
+    color: var(--text);
+    user-select: none;
+  }
+  .checkbox-row input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--primary);
     cursor: pointer;
   }
 
+  /* Mode Switcher */
   .mode-tabs {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 6px;
-    margin-bottom: 12px;
+    gap: 5px;
+    padding: 4px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 14px;
   }
   .mode-tab {
     text-align: center;
-    padding: 8px;
-    border-radius: 8px;
-    border: 1px solid var(--border);
+    padding: 8px 10px;
+    border-radius: 9px;
+    border: none;
     font-weight: 600;
-    font-size: 0.88rem;
-    background: var(--surface-2);
+    font-size: 0.86rem;
+    background: transparent;
+    color: var(--text-muted);
+  }
+  .mode-tab:hover:not(.active) {
+    color: var(--text);
+    background: var(--surface-hover);
   }
   .mode-tab.active {
     background: var(--primary);
     color: #fff;
-    border-color: var(--primary);
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
   }
 
+  /* Navigator Grid */
+  .nav-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 0.74rem;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+  }
+  .legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .legend-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 3px;
+    display: inline-block;
+  }
   .nav-grid {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    gap: 5px;
-    max-height: 260px;
+    gap: 6px;
+    max-height: 270px;
     overflow-y: auto;
-    padding-right: 4px;
-    margin-top: 8px;
+    padding: 2px 4px 2px 2px;
   }
   .nav-btn {
-    padding: 5px 2px;
+    padding: 6px 2px;
     font-size: 0.78rem;
-    border-radius: 6px;
+    font-weight: 600;
+    border-radius: 8px;
     text-align: center;
     border: 1px solid var(--border);
     background: var(--surface-2);
+    color: var(--text-muted);
   }
-  .nav-btn.current { outline: 2px solid var(--primary); font-weight: 700; }
-  .nav-btn.answered { background: var(--primary-soft); border-color: var(--primary); color: var(--primary); }
-  .nav-btn.correct { background: var(--success-soft); border-color: var(--success); color: var(--success); font-weight: 700; }
-  .nav-btn.wrong { background: var(--danger-soft); border-color: var(--danger); color: var(--danger); font-weight: 700; }
+  .nav-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+  .nav-btn.current {
+    outline: 2px solid var(--primary);
+    outline-offset: 1px;
+    color: var(--primary);
+    font-weight: 800;
+    background: var(--surface);
+  }
+  .nav-btn.answered {
+    background: var(--primary-soft);
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+  .nav-btn.correct {
+    background: var(--success-soft);
+    border-color: var(--success-border);
+    color: var(--success);
+    font-weight: 700;
+  }
+  .nav-btn.wrong {
+    background: var(--danger-soft);
+    border-color: var(--danger-border);
+    color: var(--danger);
+    font-weight: 700;
+  }
   .nav-btn.bookmarked { position: relative; }
   .nav-btn.bookmarked::after {
     content: "";
     position: absolute;
-    top: 2px; right: 2px;
+    top: 3px; right: 3px;
     width: 5px; height: 5px;
     border-radius: 50%;
     background: var(--warning);
   }
 
-  .main-area { display: flex; flex-direction: column; gap: 14px; }
+  /* Main Question Card */
+  .main-area { display: flex; flex-direction: column; gap: 16px; }
+  #questionCard {
+    padding: 24px 28px;
+  }
+  @media (max-width: 640px) {
+    #questionCard { padding: 18px 16px; }
+  }
+
   .quiz-topbar {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: 10px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid var(--border);
+    padding-bottom: 14px;
   }
   .topic-pill {
-    font-size: 0.8rem;
-    font-weight: 600;
-    padding: 4px 10px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    padding: 5px 12px;
     border-radius: 999px;
     background: var(--primary-soft);
     color: var(--primary);
+    letter-spacing: 0.01em;
   }
   .type-pill {
-    font-size: 0.78rem;
+    font-size: 0.76rem;
     font-weight: 600;
-    padding: 3px 9px;
+    padding: 4px 10px;
     border-radius: 999px;
     background: var(--surface-2);
     border: 1px solid var(--border);
     color: var(--text-muted);
   }
   .timer-pill {
-    font-family: "Consolas", monospace;
+    font-family: "Consolas", ui-monospace, monospace;
     font-weight: 700;
-    font-size: 0.95rem;
-    padding: 4px 11px;
-    border-radius: 8px;
+    font-size: 0.94rem;
+    padding: 5px 12px;
+    border-radius: 10px;
     background: var(--warning-soft);
     color: var(--warning);
-    border: 1px solid var(--warning);
+    border: 1px solid var(--warning-border);
+  }
+  .timer-pill.urgent {
+    background: var(--danger-soft);
+    color: var(--danger);
+    border-color: var(--danger-border);
+  }
+  .bookmark-btn {
+    padding: 6px 12px;
+    font-size: 0.82rem;
+    border-radius: 999px;
+  }
+  .bookmark-btn.active {
+    background: var(--warning-soft);
+    border-color: var(--warning-border);
+    color: var(--warning);
+  }
+
+  /* Progress Bar */
+  .progress-track {
+    width: 100%;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 18px;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--primary), var(--accent));
+    transition: width 0.25s ease;
+  }
+
+  .q-meta-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .q-header-num {
+    font-size: 1.05rem;
+    font-weight: 800;
+    color: var(--primary);
+  }
+  .q-orig-badge {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    padding: 2px 9px;
+    border-radius: 999px;
   }
 
   .question-text {
-    font-size: 1.08rem;
+    font-size: 1.12rem;
     font-weight: 500;
-    margin: 12px 0;
+    line-height: 1.65;
+    margin: 10px 0 16px;
+    color: var(--text);
   }
   code {
-    font-family: "Consolas", "Courier New", monospace;
+    font-family: "Consolas", "Fira Code", "Courier New", monospace;
     background: var(--code-bg);
     color: var(--code-fg);
-    padding: 1px 5px;
-    border-radius: 4px;
-    font-size: 0.92em;
+    padding: 2px 6px;
+    border-radius: 6px;
+    font-size: 0.88em;
+    font-weight: 600;
   }
   pre.code-block {
     background: #0f172a;
     color: #e2e8f0;
-    padding: 12px 14px;
-    border-radius: 8px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid #1e293b;
     overflow-x: auto;
-    font-family: "Consolas", monospace;
+    font-family: "Consolas", "Fira Code", monospace;
     font-size: 0.9rem;
-    line-height: 1.45;
-    margin: 10px 0;
+    line-height: 1.5;
+    margin: 12px 0 16px;
   }
 
+  /* Options */
   .options-list {
     display: flex;
     flex-direction: column;
-    gap: 9px;
-    margin: 14px 0;
+    gap: 10px;
+    margin: 16px 0;
   }
   .option-item {
     display: flex;
     align-items: flex-start;
-    gap: 11px;
-    padding: 11px 14px;
+    gap: 13px;
+    padding: 13px 16px;
     border: 1.5px solid var(--border);
-    border-radius: 10px;
+    border-radius: 12px;
     background: var(--surface-2);
     cursor: pointer;
     text-align: left;
-    transition: all 0.12s ease;
+    transition: all 0.15s ease;
     width: 100%;
     font-size: 0.98rem;
-    line-height: 1.45;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--text);
+    justify-content: flex-start;
   }
   .option-item:hover:not(:disabled) {
     border-color: var(--primary);
     background: var(--primary-soft);
     color: var(--text);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-sm);
   }
   .option-item:disabled {
     opacity: 1;
@@ -336,27 +603,36 @@
   .option-item.selected {
     border-color: var(--primary);
     background: var(--primary-soft);
+    box-shadow: 0 0 0 1px var(--primary);
   }
   .option-item.is-correct {
     border-color: var(--success);
     background: var(--success-soft);
+    box-shadow: 0 0 0 1px var(--success);
   }
   .option-item.is-wrong {
     border-color: var(--danger);
     background: var(--danger-soft);
+    box-shadow: 0 0 0 1px var(--danger);
   }
   .opt-badge {
-    min-width: 28px;
-    height: 28px;
-    border-radius: 7px;
+    min-width: 30px;
+    height: 30px;
+    border-radius: 8px;
     background: var(--surface);
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-strong);
+    color: var(--text-muted);
     display: inline-flex;
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    font-size: 0.86rem;
+    font-size: 0.85rem;
     flex-shrink: 0;
+    transition: all 0.15s ease;
+  }
+  .option-item:hover:not(:disabled) .opt-badge {
+    border-color: var(--primary);
+    color: var(--primary);
   }
   .option-item.selected .opt-badge {
     background: var(--primary);
@@ -373,55 +649,91 @@
     color: #fff;
     border-color: var(--danger);
   }
+  .opt-text {
+    flex: 1;
+    padding-top: 2px;
+  }
+  .option-item.is-correct::after {
+    content: "✔";
+    color: var(--success);
+    font-weight: 800;
+    font-size: 1rem;
+    margin-left: auto;
+    padding-top: 2px;
+  }
+  .option-item.is-wrong::after {
+    content: "✘";
+    color: var(--danger);
+    font-weight: 800;
+    font-size: 1rem;
+    margin-left: auto;
+    padding-top: 2px;
+  }
 
+  /* Explanation Box */
   .explanation-box {
-    margin-top: 12px;
-    padding: 12px 14px;
-    border-radius: 10px;
-    border-left: 4px solid var(--success);
+    margin-top: 16px;
+    padding: 14px 18px;
+    border-radius: 12px;
+    border: 1px solid var(--success-border);
+    border-left: 5px solid var(--success);
     background: var(--success-soft);
     font-size: 0.95rem;
+    line-height: 1.6;
   }
   .explanation-box.wrong-exp {
+    border-color: var(--danger-border);
     border-left-color: var(--danger);
     background: var(--danger-soft);
   }
 
+  /* Flashcard */
   .flashcard-area {
-    margin: 14px 0;
-    padding: 14px;
-    border-radius: 10px;
-    border: 1px dashed var(--border);
+    margin: 16px 0;
+    padding: 18px;
+    border-radius: 14px;
+    border: 1.5px dashed var(--border-strong);
     background: var(--surface-2);
   }
+
+  /* Footer */
   .quiz-footer {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
-    gap: 10px;
-    margin-top: 14px;
-    padding-top: 12px;
+    gap: 12px;
+    margin-top: 22px;
+    padding-top: 16px;
     border-top: 1px solid var(--border);
   }
   .kbd-hint {
     font-size: 0.78rem;
     color: var(--text-muted);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
   }
   kbd {
     background: var(--surface-2);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 1px 5px;
-    font-size: 0.75rem;
+    border: 1px solid var(--border-strong);
+    border-bottom-width: 2px;
+    border-radius: 5px;
+    padding: 1px 6px;
+    font-size: 0.74rem;
+    font-weight: 600;
     font-family: "Consolas", monospace;
+    color: var(--text);
   }
 
-  /* Modal for Cheat Sheet & Exam Summary */
+  /* Modals */
   .modal-backdrop {
     position: fixed;
     inset: 0;
-    background: rgba(15, 23, 42, 0.55);
+    background: rgba(15, 23, 42, 0.58);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
     display: none;
     align-items: center;
     justify-content: center;
@@ -433,267 +745,141 @@
     background: var(--surface);
     color: var(--text);
     border: 1px solid var(--border);
-    border-radius: 14px;
+    border-radius: 18px;
     width: 100%;
-    max-width: 920px;
+    max-width: 940px;
     max-height: 88vh;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 18px 50px rgba(0,0,0,0.3);
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.32);
+    overflow: hidden;
   }
   .modal-header {
-    padding: 14px 18px;
+    padding: 15px 22px;
     border-bottom: 1px solid var(--border);
+    background: var(--surface-2);
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 12px;
   }
   .modal-body {
-    padding: 18px 22px;
+    padding: 22px 26px;
     overflow-y: auto;
+    line-height: 1.68;
   }
-  .modal-body h1 { font-size: 1.35rem; margin-top: 0; }
+  .modal-body h1 {
+    font-size: 1.4rem;
+    margin-top: 0;
+    letter-spacing: -0.01em;
+  }
   .modal-body h2 {
-    font-size: 1.15rem;
+    font-size: 1.12rem;
     color: var(--primary);
     background: var(--primary-soft);
-    padding: 6px 10px;
+    padding: 8px 14px;
     border-left: 4px solid var(--primary);
-    margin-top: 18px;
+    border-radius: 0 10px 10px 0;
+    margin: 24px 0 12px;
   }
+  .modal-body h3 {
+    font-size: 1.02rem;
+    margin: 18px 0 8px;
+    color: var(--text);
+  }
+  .modal-body hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 22px 0;
+  }
+  .modal-body ul, .modal-body ol {
+    padding-left: 22px;
+    margin: 6px 0 12px;
+  }
+  .modal-body li { margin: 4px 0; }
   .modal-body blockquote {
-    border-left: 3px solid var(--success);
+    border-left: 4px solid var(--success);
     background: var(--success-soft);
-    padding: 8px 12px;
-    margin: 8px 0;
+    padding: 10px 14px;
+    border-radius: 0 10px 10px 0;
+    margin: 10px 0;
+  }
+  .modal-body .math-inline {
+    font-family: "Cambria Math", "Times New Roman", serif;
+    font-style: italic;
+    background: var(--surface-2);
+    padding: 1px 5px;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    font-size: 0.96em;
+  }
+  .modal-body .math-block {
+    font-family: "Consolas", ui-monospace, monospace;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--accent);
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin: 10px 0;
+    font-weight: 600;
+    overflow-x: auto;
+  }
+  .modal-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 0.9rem;
+  }
+  .modal-body th, .modal-body td {
+    border: 1px solid var(--border);
+    padding: 8px 10px;
+    text-align: left;
+  }
+  .modal-body th {
+    background: var(--surface-2);
+    font-weight: 700;
+  }
+
+  /* Exam Result Summary */
+  .result-hero {
+    text-align: center;
+    padding: 18px 12px 22px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface-2);
+    border-radius: 14px;
+    margin-bottom: 16px;
+  }
+  .result-score {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--primary);
+    line-height: 1.1;
   }
   .summary-row {
     display: flex;
-    justify-content: space-between;
-    padding: 8px 10px;
-    border-bottom: 1px solid var(--border);
-    font-size: 0.92rem;
-  }
-
-  /* AI Integration Styles */
-  button.ai-btn {
-    background: linear-gradient(135deg, #2563eb, #7c3aed);
-    color: #fff;
-    border-color: transparent;
-    font-weight: 600;
-  }
-  button.ai-btn:hover:not(:disabled) {
-    opacity: 0.92;
-    color: #fff;
-    border-color: transparent;
-  }
-  .ai-status-dot {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--text-muted);
-    margin-left: 5px;
-    vertical-align: middle;
-  }
-  .ai-status-dot.ready { background: var(--success); }
-
-  .ai-inline-bar {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 8px;
-    margin-top: 12px;
-  }
-  .ai-explain-box {
-    margin-top: 12px;
-    padding: 14px 16px;
-    border-radius: 10px;
-    border: 1px solid rgba(124, 58, 237, 0.35);
-    border-left: 4px solid #7c3aed;
-    background: var(--primary-soft);
-    font-size: 0.94rem;
-  }
-  .ai-explain-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    margin-bottom: 8px;
-    padding-bottom: 6px;
-    border-bottom: 1px solid var(--border);
-    font-weight: 700;
-    color: var(--primary);
-  }
-  .ai-mini-actions {
-    display: flex;
+    flex-direction: column;
     gap: 6px;
-  }
-  .ai-mini-actions button {
-    padding: 3px 8px;
-    font-size: 0.78rem;
-  }
-
-  .ai-md p { margin: 6px 0; }
-  .ai-md p:first-child { margin-top: 0; }
-  .ai-md p:last-child { margin-bottom: 0; }
-  .ai-md ul, .ai-md ol { margin: 6px 0 6px 20px; padding: 0; }
-  .ai-md li { margin: 3px 0; }
-  .ai-md h3, .ai-md h4 { margin: 10px 0 4px; font-size: 0.98rem; color: var(--primary); }
-  .ai-md pre {
-    background: #0f172a;
-    color: #e2e8f0;
     padding: 10px 12px;
-    border-radius: 8px;
-    overflow-x: auto;
-    font-family: "Consolas", monospace;
-    font-size: 0.85rem;
-    margin: 8px 0;
-  }
-  .ai-md pre code {
-    background: transparent;
-    color: inherit;
-    padding: 0;
-  }
-
-  /* AI Chat Slide-over Drawer */
-  .ai-drawer-backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(15, 23, 42, 0.45);
-    display: none;
-    justify-content: flex-end;
-    z-index: 70;
-  }
-  .ai-drawer-backdrop.open { display: flex; }
-  .ai-drawer {
-    width: 100%;
-    max-width: 460px;
-    height: 100%;
-    background: var(--surface);
-    color: var(--text);
-    border-left: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    box-shadow: -8px 0 32px rgba(0, 0, 0, 0.25);
-  }
-  .ai-drawer-header {
-    padding: 12px 16px;
     border-bottom: 1px solid var(--border);
+    font-size: 0.9rem;
+  }
+  .summary-row:last-child { border-bottom: none; }
+  .summary-row-top {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    gap: 8px;
-  }
-  .ai-context-bar {
-    padding: 8px 16px;
-    background: var(--surface-2);
-    border-bottom: 1px solid var(--border);
-    font-size: 0.82rem;
-    display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-  }
-  .ai-context-pill {
-    background: var(--primary-soft);
-    color: var(--primary);
-    padding: 2px 8px;
-    border-radius: 999px;
-    font-weight: 600;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 210px;
-  }
-  .ai-chat-messages {
-    flex: 1;
-    overflow-y: auto;
-    padding: 14px 16px;
-    display: flex;
-    flex-direction: column;
     gap: 10px;
   }
-  .ai-msg {
-    max-width: 90%;
-    padding: 10px 13px;
-    border-radius: 12px;
-    font-size: 0.92rem;
-    line-height: 1.5;
-    word-wrap: break-word;
-  }
-  .ai-msg.user {
-    align-self: flex-end;
-    background: var(--primary);
-    color: #fff;
-    border-bottom-right-radius: 4px;
-  }
-  .ai-msg.assistant {
-    align-self: flex-start;
-    background: var(--surface-2);
-    border: 1px solid var(--border);
-    border-bottom-left-radius: 4px;
-  }
-  .ai-msg.error {
-    align-self: stretch;
-    background: var(--danger-soft);
-    border: 1px solid var(--danger);
-    color: var(--danger);
-  }
-  .ai-chips {
-    padding: 8px 16px 4px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    border-top: 1px solid var(--border);
-    background: var(--surface-2);
-  }
-  .ai-chip {
-    font-size: 0.78rem;
-    padding: 4px 10px;
+  .summary-bar {
+    height: 6px;
     border-radius: 999px;
-    background: var(--surface);
-  }
-  .ai-chat-input-row {
-    padding: 10px 16px 14px;
-    display: flex;
-    gap: 8px;
-    align-items: flex-end;
     background: var(--surface-2);
+    overflow: hidden;
   }
-  .ai-chat-input-row textarea {
-    flex: 1;
-    resize: none;
-    min-height: 42px;
-    max-height: 120px;
-    padding: 9px 11px;
-    border-radius: 10px;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--text);
-    font-family: inherit;
-    font-size: 0.92rem;
-  }
-  .ai-preset-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 6px;
-    max-height: 150px;
-    overflow-y: auto;
-  }
-  .ai-preset-row button {
-    font-size: 0.76rem;
-    padding: 3px 8px;
-  }
-  .ai-note {
-    font-size: 0.82rem;
-    color: var(--text-muted);
-    background: var(--surface-2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 9px 11px;
-    margin-bottom: 12px;
+  .summary-bar-fill {
+    height: 100%;
+    border-radius: 999px;
+    background: var(--success);
   }
 </style>
 </head>
@@ -702,12 +888,16 @@
 <header>
   <div class="header-inner">
     <div class="brand">
-      <h1>Ôn Tập Trắc Nghiệm NLHĐH</h1>
-      <span class="badge" id="totalBadge">238 câu</span>
+      <div class="brand-icon" aria-hidden="true">💻</div>
+      <div class="brand-text">
+        <div class="brand-title-row">
+          <h1>Ôn Tập Nguyên Lý Hệ Điều Hành</h1>
+          <span class="badge" id="totalBadge">238 câu</span>
+        </div>
+        <span class="brand-sub">Ngân hàng trắc nghiệm &amp; thi thử cuối kỳ</span>
+      </div>
     </div>
     <div class="header-actions">
-      <button id="btnOpenAiChat" class="ai-btn">✨ Trợ giảng AI</button>
-      <button id="btnAiSettings" title="Cài đặt API Key &amp; Model AI">⚙️ Cài đặt AI<span class="ai-status-dot" id="aiStatusDot"></span></button>
       <button id="btnCheatSheet">📘 Sổ tay kiến thức</button>
       <button id="btnTheme">🌙 Giao diện tối</button>
       <button id="btnResetProgress" class="danger-outline">↺ Xóa tiến độ</button>
@@ -726,13 +916,13 @@
 
       <div id="practiceControls">
         <div class="control-group">
-          <label>Chủ đề</label>
+          <label for="topicFilter">Chủ đề</label>
           <select id="topicFilter">
             <option value="ALL">Tất cả chủ đề (238 câu)</option>
           </select>
         </div>
         <div class="control-group">
-          <label>Lọc trạng thái / Dạng câu</label>
+          <label for="statusFilter">Lọc trạng thái / Dạng câu</label>
           <select id="statusFilter">
             <option value="ALL">Tất cả câu hỏi</option>
             <option value="MCQ_ONLY">Chỉ Trắc nghiệm (chọn đáp án)</option>
@@ -743,17 +933,17 @@
           </select>
         </div>
         <div class="control-group">
-          <label>Tìm kiếm câu hỏi</label>
+          <label for="searchInput">Tìm kiếm câu hỏi</label>
           <input type="text" id="searchInput" placeholder="Nhập từ khóa (vd: SRTF, TLB, fork)..." />
         </div>
         <label class="checkbox-row"><input type="checkbox" id="chkShuffleQ" /> Xáo trộn thứ tự câu hỏi</label>
         <label class="checkbox-row"><input type="checkbox" id="chkShuffleOpt" /> Xáo trộn đáp án A/B/C/D</label>
-        <button class="primary" id="btnApplyFilter" style="width:100%;margin-top:8px;">Áp dụng bộ lọc</button>
+        <button class="primary" id="btnApplyFilter" style="width:100%;margin-top:10px;">Áp dụng bộ lọc</button>
       </div>
 
       <div id="examControls" style="display:none;">
         <div class="control-group">
-          <label>Số lượng câu thi thử</label>
+          <label for="examCount">Số lượng câu thi thử</label>
           <select id="examCount">
             <option value="20">20 câu (20 phút)</option>
             <option value="40">40 câu (40 phút)</option>
@@ -763,18 +953,20 @@
           </select>
         </div>
         <div class="control-group">
-          <label>Phạm vi chủ đề thi thử</label>
+          <label for="examTopicFilter">Phạm vi chủ đề thi thử</label>
           <select id="examTopicFilter">
             <option value="ALL">Ngẫu nhiên tất cả 7 chủ đề</option>
           </select>
         </div>
         <button class="primary" id="btnStartExam" style="width:100%;margin-top:6px;">🚀 Bắt đầu bài thi mới</button>
-        <button class="success" id="btnSubmitExam" style="width:100%;margin-top:8px;display:none;">✅ Nộp bài & Chấm điểm</button>
+        <button class="success" id="btnSubmitExam" style="width:100%;margin-top:8px;display:none;">✅ Nộp bài &amp; Chấm điểm</button>
       </div>
     </div>
 
     <div class="card">
-      <strong style="font-size:0.9rem;">Thống kê ôn tập</strong>
+      <div class="section-title">
+        <span>Thống kê ôn tập</span>
+      </div>
       <div class="stat-grid">
         <div class="stat-box"><div class="stat-val" id="statDone">0</div><div class="stat-lbl">Đã làm</div></div>
         <div class="stat-box"><div class="stat-val" id="statAcc" style="color:var(--success)">0%</div><div class="stat-lbl">Tỉ lệ đúng</div></div>
@@ -784,8 +976,15 @@
     </div>
 
     <div class="card">
-      <div style="display:flex;justify-content:space-between;align-items:center;">
-        <strong style="font-size:0.9rem;">Danh sách câu (<span id="navCount">0</span>)</strong>
+      <div class="section-title">
+        <span>Danh sách câu</span>
+        <span id="navCount" style="color:var(--primary);">0</span>
+      </div>
+      <div class="nav-legend">
+        <span class="legend-item"><span class="legend-dot" style="background:var(--success)"></span>Đúng</span>
+        <span class="legend-item"><span class="legend-dot" style="background:var(--danger)"></span>Sai</span>
+        <span class="legend-item"><span class="legend-dot" style="background:var(--primary)"></span>Đã chọn</span>
+        <span class="legend-item"><span class="legend-dot" style="background:var(--warning)"></span>Đánh dấu</span>
       </div>
       <div class="nav-grid" id="navGrid"></div>
     </div>
@@ -801,13 +1000,17 @@
         </div>
         <div style="display:flex;align-items:center;gap:8px;">
           <span class="timer-pill" id="examTimer" style="display:none;">50:00</span>
-          <button id="btnBookmark" title="Đánh dấu câu này (Phím B)">☆ Đánh dấu</button>
+          <button id="btnBookmark" class="bookmark-btn" title="Đánh dấu câu này (Phím B)">☆ Đánh dấu</button>
         </div>
       </div>
 
-      <div style="margin-top:12px;display:flex;align-items:baseline;justify-content:space-between;">
-        <strong style="font-size:1.05rem;color:var(--primary);" id="qHeader">Câu 1 / 238</strong>
-        <span style="font-size:0.82rem;color:var(--text-muted);" id="qOrigNum">Mã gốc: Câu 1</span>
+      <div class="progress-track" aria-hidden="true">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+
+      <div class="q-meta-row">
+        <span class="q-header-num" id="qHeader">Câu 1 / 238</span>
+        <span class="q-orig-badge" id="qOrigNum">Mã gốc: Câu 1</span>
       </div>
 
       <div class="question-text" id="qText"></div>
@@ -816,7 +1019,7 @@
       <div class="options-list" id="optionsContainer"></div>
 
       <div class="flashcard-area" id="flashcardContainer" style="display:none;">
-        <input type="text" id="flashInput" placeholder="Gõ nhanh câu trả lời để tự nhẩm (tùy chọn)..." style="margin-bottom:10px;" />
+        <input type="text" id="flashInput" placeholder="Gõ nhanh câu trả lời để tự nhẩm (tùy chọn)..." style="margin-bottom:12px;" />
         <div style="display:flex;gap:8px;flex-wrap:wrap;">
           <button class="primary" id="btnRevealFlash">👁️ Hiện đáp án</button>
           <button id="btnFlashRight" style="display:none;border-color:var(--success);color:var(--success);">✔ Mình nhớ đúng</button>
@@ -824,21 +1027,11 @@
         </div>
       </div>
 
-      <div id="multiActionRow" style="display:none;margin-top:8px;">
+      <div id="multiActionRow" style="display:none;margin-top:10px;">
         <button class="primary" id="btnCheckMulti">✔ Kiểm tra đáp án</button>
       </div>
 
       <div class="explanation-box" id="explanationBox" style="display:none;"></div>
-
-      <div class="ai-inline-bar" id="aiInlineBar" style="display:none;">
-        <button class="ai-btn" id="btnAiExplain">✨ AI Giải thích chi tiết</button>
-        <button id="btnAiAskChat">💬 Hỏi tiếp Trợ giảng AI</button>
-        <label class="checkbox-row" style="margin:0 0 0 auto;font-size:0.84rem;color:var(--text-muted);" title="Tự động gọi AI giải thích ngay sau khi bạn kiểm tra đáp án">
-          <input type="checkbox" id="chkAutoAiExplain" />
-          <span>Tự động AI giải khi kiểm tra</span>
-        </label>
-      </div>
-      <div class="ai-explain-box" id="aiExplainBox" style="display:none;"></div>
 
       <div class="quiz-footer">
         <div style="display:flex;gap:8px;">
@@ -873,95 +1066,6 @@
     </div>
     <div class="modal-body" id="resultBody"></div>
   </div>
-</div>
-
-<!-- AI SETTINGS MODAL -->
-<div class="modal-backdrop" id="aiSettingsModal">
-  <div class="modal-content" style="max-width:560px;">
-    <div class="modal-header">
-      <strong>⚙️ Cài đặt Trợ giảng AI</strong>
-      <button id="btnCloseAiSettings">✕ Đóng</button>
-    </div>
-    <div class="modal-body">
-      <div class="ai-note">
-        🔒 <strong>Bảo mật &amp; Quyền riêng tư:</strong> API Key chỉ được lưu trong trình duyệt của bạn (<code>localStorage</code>) và gọi trực tiếp từ trình duyệt tới nhà cung cấp AI bạn chọn.
-      </div>
-      <div class="control-group">
-        <label for="aiProvider">Nhà cung cấp AI</label>
-        <select id="aiProvider">
-          <option value="gemini">Google Gemini (Có bản miễn phí tại Google AI Studio)</option>
-          <option value="openai">OpenAI / Tương thích OpenAI (OpenAI, Groq, OpenRouter, DeepSeek...)</option>
-          <option value="ollama">Ollama (Chạy Offline / Local trên máy bạn)</option>
-        </select>
-      </div>
-      <div class="control-group" id="aiBaseUrlGroup" style="display:none;">
-        <label for="aiBaseUrl">Base URL (Endpoint)</label>
-        <input type="text" id="aiBaseUrl" placeholder="https://api.openai.com/v1" />
-        <div class="ai-preset-row" id="aiUrlPresets">
-          <button type="button" data-url="https://api.openai.com/v1" data-model="gpt-4o-mini">OpenAI</button>
-          <button type="button" data-url="https://api.groq.com/openai/v1" data-model="llama-3.3-70b-versatile">Groq</button>
-          <button type="button" data-url="https://openrouter.ai/api/v1" data-model="google/gemini-3-flash-preview">OpenRouter</button>
-          <button type="button" data-url="https://api.deepseek.com/v1" data-model="deepseek-chat">DeepSeek</button>
-        </div>
-      </div>
-      <div class="control-group">
-        <label for="aiModel">Model</label>
-        <div style="display:flex;gap:6px;">
-          <input type="text" id="aiModel" placeholder="gemini-3.8-flash" />
-          <button type="button" id="btnFetchModels" title="Lấy danh sách model khả dụng từ API Key">🔄 Tải DS model</button>
-        </div>
-        <div class="ai-preset-row" id="aiModelPresets"></div>
-      </div>
-      <div class="control-group" id="aiApiKeyGroup">
-        <label for="aiApiKey">API Key</label>
-        <div style="display:flex;gap:6px;">
-          <input type="password" id="aiApiKey" placeholder="Dán API Key của bạn vào đây..." autocomplete="off" />
-          <button type="button" id="btnToggleApiKey" title="Hiện / Ẩn API Key">👁️</button>
-        </div>
-      </div>
-      <div id="aiSettingsFeedback" style="font-size:0.86rem;margin:8px 0;min-height:20px;"></div>
-      <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;margin-top:12px;">
-        <div style="display:flex;gap:8px;">
-          <button type="button" class="primary" id="btnSaveAiConfig">💾 Lưu cài đặt</button>
-          <button type="button" id="btnTestAiConfig">🔌 Kiểm tra kết nối</button>
-        </div>
-        <button type="button" class="danger-outline" id="btnClearAiConfig">🗑️ Xóa Key</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- AI CHAT DRAWER -->
-<div class="ai-drawer-backdrop" id="aiDrawerBackdrop">
-  <aside class="ai-drawer" aria-label="Trợ giảng AI Nguyên lý Hệ điều hành">
-    <div class="ai-drawer-header">
-      <div style="display:flex;align-items:center;gap:8px;">
-        <strong>✨ Trợ giảng AI NLHĐH</strong>
-      </div>
-      <div style="display:flex;gap:6px;">
-        <button type="button" id="btnClearAiChat" title="Xóa lịch sử trò chuyện">🗑️</button>
-        <button type="button" id="btnDrawerAiSettings" title="Cài đặt AI">⚙️</button>
-        <button type="button" id="btnCloseAiDrawer" title="Đóng">✕</button>
-      </div>
-    </div>
-    <div class="ai-context-bar">
-      <label class="checkbox-row" style="margin:0;font-size:0.82rem;">
-        <input type="checkbox" id="chkAiAttachQuestion" checked />
-        <span>Đính kèm câu hiện tại</span>
-      </label>
-      <span class="ai-context-pill" id="aiContextPill">Câu 1</span>
-    </div>
-    <div class="ai-chat-messages" id="aiChatMessages"></div>
-    <div class="ai-chips" id="aiQuickChips">
-      <button type="button" class="ai-chip" data-prompt="Hãy giải thích câu hỏi này thật dễ hiểu theo từng bước.">Giải thích dễ hiểu</button>
-      <button type="button" class="ai-chip" data-prompt="Tóm tắt công thức hoặc mẹo ghi nhớ nhanh cho dạng câu này.">Mẹo nhớ &amp; Công thức</button>
-      <button type="button" class="ai-chip" data-prompt="Cho một ví dụ minh họa ngắn gọn để hiểu bản chất kiến thức trong câu này.">Ví dụ minh họa</button>
-    </div>
-    <div class="ai-chat-input-row">
-      <textarea id="aiChatInput" rows="1" placeholder="Hỏi AI về câu này hoặc kiến thức Hệ điều hành..."></textarea>
-      <button type="button" class="ai-btn" id="btnSendAiChat">Gửi</button>
-    </div>
-  </aside>
 </div>
 
 <script>
@@ -1117,7 +1221,9 @@ function updateTimerDisplay() {
   const s = Math.max(0, state.exam.secondsLeft);
   const mm = String(Math.floor(s / 60)).padStart(2, "0");
   const ss = String(s % 60).padStart(2, "0");
-  document.getElementById("examTimer").textContent = `${mm}:${ss}`;
+  const timerEl = document.getElementById("examTimer");
+  timerEl.textContent = `${mm}:${ss}`;
+  timerEl.classList.toggle("urgent", s <= 300);
 }
 
 function submitExam() {
@@ -1145,14 +1251,25 @@ function submitExam() {
   const pct = total ? Math.round((correctCount / total) * 100) : 0;
   const score10 = total ? ((correctCount / total) * 10).toFixed(2) : "0.00";
   let html = `
-    <div style="text-align:center;padding:12px 0 18px;border-bottom:1px solid var(--border);">
-      <div style="font-size:2.2rem;font-weight:800;color:var(--primary);">${score10} / 10</div>
-      <div style="font-size:1.05rem;margin-top:4px;">Đúng <strong>${correctCount}/${total}</strong> câu (${pct}%)</div>
+    <div class="result-hero">
+      <div class="result-score">${score10} / 10</div>
+      <div style="font-size:1.05rem;margin-top:6px;">Đúng <strong>${correctCount}/${total}</strong> câu (${pct}%)</div>
     </div>
-    <h3 style="margin:14px 0 8px;">Phân tích theo Chủ đề</h3>
+    <h3 style="margin:0 0 10px;">Phân tích theo Chủ đề</h3>
   `;
   Object.entries(byTopic).forEach(([t, v]) => {
-    html += `<div class="summary-row"><span>${t}</span><strong>${v.correct}/${v.total} (${Math.round(v.correct*100/v.total)}%)</strong></div>`;
+    const tPct = Math.round(v.correct * 100 / v.total);
+    const barColor = tPct >= 70 ? "var(--success)" : (tPct >= 40 ? "var(--warning)" : "var(--danger)");
+    html += `
+      <div class="summary-row">
+        <div class="summary-row-top">
+          <span>${t}</span>
+          <strong>${v.correct}/${v.total} (${tPct}%)</strong>
+        </div>
+        <div class="summary-bar">
+          <div class="summary-bar-fill" style="width:${tPct}%;background:${barColor};"></div>
+        </div>
+      </div>`;
   });
   document.getElementById("resultBody").innerHTML = html;
   document.getElementById("resultModal").classList.add("open");
@@ -1201,21 +1318,27 @@ function renderNav() {
 }
 
 function renderQuestion() {
-  const card = document.getElementById("questionCard");
   const q = state.deck[state.currentIndex];
+  const progressFill = document.getElementById("progressFill");
   if (!q) {
     document.getElementById("qTopic").textContent = "Không có câu hỏi";
     document.getElementById("qHeader").textContent = "0 / 0";
+    document.getElementById("qOrigNum").textContent = "";
     document.getElementById("qText").innerHTML = "Không tìm thấy câu hỏi nào khớp với bộ lọc hiện tại. Hãy thử chọn lại bộ lọc.";
     document.getElementById("qCode").style.display = "none";
     document.getElementById("optionsContainer").innerHTML = "";
     document.getElementById("flashcardContainer").style.display = "none";
     document.getElementById("multiActionRow").style.display = "none";
     document.getElementById("explanationBox").style.display = "none";
-    document.getElementById("aiInlineBar").style.display = "none";
-    document.getElementById("aiExplainBox").style.display = "none";
-    updateAiContextBar(null);
+    if (progressFill) progressFill.style.width = "0%";
+    document.getElementById("btnPrev").disabled = true;
+    document.getElementById("btnNext").disabled = true;
     return;
+  }
+
+  if (progressFill) {
+    const pct = Math.round(((state.currentIndex + 1) / state.deck.length) * 100);
+    progressFill.style.width = `${pct}%`;
   }
 
   document.getElementById("qTopic").textContent = q.topic;
@@ -1225,8 +1348,9 @@ function renderQuestion() {
   document.getElementById("qOrigNum").textContent = `Mã gốc: Câu ${q.num}`;
 
   const bmBtn = document.getElementById("btnBookmark");
-  bmBtn.textContent = state.bookmarks[q.id] ? "★ Đã đánh dấu" : "☆ Đánh dấu";
-  bmBtn.style.color = state.bookmarks[q.id] ? "var(--warning)" : "";
+  const isBm = Boolean(state.bookmarks[q.id]);
+  bmBtn.textContent = isBm ? "★ Đã đánh dấu" : "☆ Đánh dấu";
+  bmBtn.classList.toggle("active", isBm);
 
   document.getElementById("qText").innerHTML = q.question;
   const codeEl = document.getElementById("qCode");
@@ -1256,8 +1380,8 @@ function renderQuestion() {
     multiRow.style.display = "none";
     document.getElementById("flashInput").value = "";
     const flashRevealed = Boolean(state.practiceRevealed && state.practiceRevealed[q.id]);
-    document.getElementById("btnFlashRight").style.display = flashRevealed ? "inline-block" : "none";
-    document.getElementById("btnFlashWrong").style.display = flashRevealed ? "inline-block" : "none";
+    document.getElementById("btnFlashRight").style.display = flashRevealed ? "inline-flex" : "none";
+    document.getElementById("btnFlashWrong").style.display = flashRevealed ? "inline-flex" : "none";
     if (flashRevealed) {
       expEl.style.display = "block";
       expEl.innerHTML = q.explanation;
@@ -1279,7 +1403,7 @@ function renderQuestion() {
         else if (isSelected && !isAnswer) btn.classList.add("is-wrong");
       }
 
-      btn.innerHTML = `<span class="opt-badge">${opt.label}</span><span>${opt.text}</span>`;
+      btn.innerHTML = `<span class="opt-badge">${opt.label}</span><span class="opt-text">${opt.text}</span>`;
       btn.onclick = () => handleOptionClick(q, idx);
       optsEl.appendChild(btn);
     });
@@ -1293,9 +1417,6 @@ function renderQuestion() {
       expEl.innerHTML = q.explanation;
     }
   }
-
-  renderAiInlineForQuestion(q, isExam, isRevealed, chosenArr);
-  updateAiContextBar(q);
 
   document.getElementById("btnPrev").disabled = state.currentIndex === 0;
   document.getElementById("btnNext").disabled = state.currentIndex >= state.deck.length - 1;
@@ -1340,9 +1461,6 @@ function checkPracticeQuestion(q) {
   updateStats();
   renderQuestion();
   renderNav();
-  if (isAutoAiExplainEnabled()) {
-    explainCurrentQuestion(false, { silentIfUnconfigured: true });
-  }
 }
 
 function renderAll() {
@@ -1400,9 +1518,6 @@ document.getElementById("btnRevealFlash").onclick = () => {
   if (!q) return;
   state.practiceRevealed[q.id] = true;
   renderQuestion();
-  if (isAutoAiExplainEnabled()) {
-    explainCurrentQuestion(false, { silentIfUnconfigured: true });
-  }
 };
 
 document.getElementById("btnFlashRight").onclick = () => {
@@ -1478,10 +1593,9 @@ document.querySelectorAll(".modal-backdrop").forEach(m => {
 document.addEventListener("keydown", e => {
   if (e.key === "Escape") {
     document.querySelectorAll(".modal-backdrop.open").forEach(m => m.classList.remove("open"));
-    document.getElementById("aiDrawerBackdrop").classList.remove("open");
     return;
   }
-  if (document.querySelector(".modal-backdrop.open, .ai-drawer-backdrop.open")) return;
+  if (document.querySelector(".modal-backdrop.open")) return;
   if (e.target.tagName === "INPUT" || e.target.tagName === "SELECT" || e.target.tagName === "TEXTAREA") return;
   const q = state.deck[state.currentIndex];
   if (!q) return;
@@ -1505,741 +1619,8 @@ document.addEventListener("keydown", e => {
   }
 });
 
-// ================= AI INTEGRATION =================
-const AI_CONFIG_KEY = "nlhdh_ai_config_v1";
-const AI_AUTO_KEY = "nlhdh_ai_auto_explain_v1";
-const AI_DEFAULTS = {
-  gemini: {
-    baseUrl: "",
-    model: "gemini-3.8-flash",
-    presets: ["gemini-4-hydrogen", "gemini-3.8-flash", "gemini-3.1-pro-preview", "gemini-3-flash-preview"]
-  },
-  openai: { baseUrl: "https://api.openai.com/v1", model: "gpt-4o-mini", presets: ["gpt-4o-mini", "llama-3.3-70b-versatile", "deepseek-chat"] },
-  ollama: { baseUrl: "http://localhost:11434", model: "llama3.2", presets: ["llama3.2", "qwen2.5:7b", "gemma2"] }
-};
-
-let aiConfig = { provider: "gemini", baseUrl: "", model: "gemini-3.8-flash", apiKey: "" };
-state.aiExplainCache = {};
-state.aiChatHistory = [];
-state.aiChatBusy = false;
-state.aiExplainAbort = null;
-state.aiChatAbort = null;
-state.lastRenderedQuestionId = null;
-
-function isAutoAiExplainEnabled() {
-  return localStorage.getItem(AI_AUTO_KEY) !== "false";
-}
-
-function loadAiConfig() {
-  try {
-    const raw = localStorage.getItem(AI_CONFIG_KEY);
-    if (raw) {
-      const parsed = JSON.parse(raw);
-      aiConfig = { ...aiConfig, ...parsed };
-    }
-  } catch (e) {}
-  const chkAuto = document.getElementById("chkAutoAiExplain");
-  if (chkAuto) chkAuto.checked = isAutoAiExplainEnabled();
-  updateAiStatusUI();
-}
-
-function saveAiConfigToStorage() {
-  localStorage.setItem(AI_CONFIG_KEY, JSON.stringify(aiConfig));
-  updateAiStatusUI();
-}
-
-function isAiConfigured() {
-  if (!aiConfig.model || !aiConfig.model.trim()) return false;
-  if (aiConfig.provider === "ollama") return Boolean(aiConfig.baseUrl && aiConfig.baseUrl.trim());
-  return Boolean(aiConfig.apiKey && aiConfig.apiKey.trim());
-}
-
-function updateAiStatusUI() {
-  const dot = document.getElementById("aiStatusDot");
-  if (!dot) return;
-  dot.classList.toggle("ready", isAiConfigured());
-  dot.title = isAiConfigured()
-    ? `Đã cấu hình: ${aiConfig.provider} (${aiConfig.model})`
-    : "Chưa cấu hình API Key AI";
-}
-
-function escapeHtml(str) {
-  return String(str)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;");
-}
-
-function formatInlineMd(escapedText) {
-  return escapedText
-    .replace(/`([^`\n]+)`/g, "<code>$1</code>")
-    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
-    .replace(/\*([^*\n]+)\*/g, "<em>$1</em>");
-}
-
-function renderMarkdownSafe(md) {
-  if (!md) return "";
-  const segments = String(md).split(/```([^\n`]*)\r?\n?([\s\S]*?)```/g);
-  let html = '<div class="ai-md">';
-  for (let i = 0; i < segments.length; i += 3) {
-    const textPart = segments[i] || "";
-    if (textPart) {
-      const lines = textPart.split(/\r?\n/);
-      let inUl = false;
-      let inOl = false;
-      const closeLists = () => {
-        if (inUl) { html += "</ul>"; inUl = false; }
-        if (inOl) { html += "</ol>"; inOl = false; }
-      };
-      for (const line of lines) {
-        const trimmed = line.trim();
-        if (!trimmed) {
-          closeLists();
-          continue;
-        }
-        const hMatch = trimmed.match(/^(#{1,4})\s+(.*)$/);
-        if (hMatch) {
-          closeLists();
-          const lvl = hMatch[1].length <= 3 ? "h3" : "h4";
-          html += `<${lvl}>${formatInlineMd(escapeHtml(hMatch[2]))}</${lvl}>`;
-          continue;
-        }
-        const ulMatch = trimmed.match(/^[-*•]\s+(.*)$/);
-        if (ulMatch) {
-          if (inOl) { html += "</ol>"; inOl = false; }
-          if (!inUl) { html += "<ul>"; inUl = true; }
-          html += `<li>${formatInlineMd(escapeHtml(ulMatch[1]))}</li>`;
-          continue;
-        }
-        const olMatch = trimmed.match(/^\d+\.\s+(.*)$/);
-        if (olMatch) {
-          if (inUl) { html += "</ul>"; inUl = false; }
-          if (!inOl) { html += "<ol>"; inOl = true; }
-          html += `<li>${formatInlineMd(escapeHtml(olMatch[1]))}</li>`;
-          continue;
-        }
-        closeLists();
-        html += `<p>${formatInlineMd(escapeHtml(trimmed))}</p>`;
-      }
-      closeLists();
-    }
-    if (i + 2 < segments.length) {
-      const codeBody = segments[i + 2] || "";
-      html += `<pre><code>${escapeHtml(codeBody.replace(/\n$/, ""))}</code></pre>`;
-    }
-  }
-  html += "</div>";
-  return html;
-}
-
-function htmlToPlainText(html) {
-  if (!html) return "";
-  const div = document.createElement("div");
-  div.innerHTML = String(html).replace(/<br\s*\/?>/gi, "\n");
-  return (div.textContent || div.innerText || "").trim();
-}
-
-function getCurrentQuestionInfo() {
-  const q = state.deck[state.currentIndex];
-  if (!q) return null;
-  const isExam = state.mode === "exam";
-  const isRevealed = isExam ? state.exam.submitted : Boolean(state.practiceRevealed && state.practiceRevealed[q.id]);
-  const chosenArr = isExam
-    ? (state.exam.responses[q.id] || [])
-    : ((state.practiceSelected && state.practiceSelected[q.id]) || (state.progress[q.id]?.chosen || []));
-  return { q, isExam, isRevealed, chosenArr };
-}
-
-function buildQuestionContext(q, includeAnswer, chosenArr) {
-  if (!q) return "";
-  const lines = [
-    `Chủ đề: ${q.topic}`,
-    `Câu hỏi (Mã gốc ${q.num}): ${htmlToPlainText(q.question)}`
-  ];
-  if (q.code) lines.push(`Đoạn mã:\n\`\`\`\n${q.code}\n\`\`\``);
-  if (q.options && q.options.length) {
-    lines.push("Các phương án:");
-    q.options.forEach(opt => lines.push(`  ${opt.label}. ${htmlToPlainText(opt.text)}`));
-  }
-  if (chosenArr && chosenArr.length && q.options && q.options.length) {
-    const chosenLabels = chosenArr.map(i => q.options[i]?.label).filter(Boolean).join(", ");
-    if (chosenLabels) lines.push(`Người dùng đang chọn: ${chosenLabels}`);
-  }
-  if (includeAnswer) {
-    if (q.options && q.options.length && q.answers && q.answers.length) {
-      const ansLabels = q.answers.map(i => q.options[i]?.label).filter(Boolean).join(", ");
-      lines.push(`Đáp án chính thức: ${ansLabels}`);
-    }
-    if (q.explanation) {
-      lines.push(`Ghi chú/Đáp án gốc: ${htmlToPlainText(q.explanation)}`);
-    }
-  }
-  return lines.join("\n");
-}
-
-async function callAI(messages, { systemPrompt = "", signal } = {}) {
-  if (!isAiConfigured()) {
-    throw new Error("Bạn chưa cấu hình API Key hoặc Model AI. Hãy bấm nút \"⚙️ Cài đặt AI\" ở góc trên để nhập key.");
-  }
-  const provider = aiConfig.provider;
-  const model = aiConfig.model.trim();
-  const apiKey = (aiConfig.apiKey || "").trim();
-  const baseUrl = (aiConfig.baseUrl || AI_DEFAULTS[provider]?.baseUrl || "").trim().replace(/\/+$/, "");
-
-  try {
-    if (provider === "gemini") {
-      const url = `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent?key=${encodeURIComponent(apiKey)}`;
-      const body = {
-        contents: messages.map(m => ({
-          role: m.role === "assistant" ? "model" : "user",
-          parts: [{ text: m.text }]
-        })),
-        generationConfig: { temperature: 0.4 }
-      };
-      if (systemPrompt) {
-        body.systemInstruction = { parts: [{ text: systemPrompt }] };
-      }
-      const res = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-        signal
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        const msg = data?.error?.message || `HTTP ${res.status}`;
-        if (res.status === 400 || res.status === 401 || res.status === 403) {
-          throw new Error(`API Key hoặc Model Gemini không hợp lệ (${msg}).`);
-        }
-        if (res.status === 429) {
-          throw new Error(`Vượt giới hạn lượt gọi Gemini (429): ${msg}`);
-        }
-        throw new Error(`Lỗi Gemini: ${msg}`);
-      }
-      const reply = data?.candidates?.[0]?.content?.parts?.map(p => p.text || "").join("") || "";
-      if (!reply) throw new Error("Gemini không trả về nội dung phản hồi.");
-      return reply;
-    }
-
-    if (provider === "openai") {
-      if (!baseUrl) throw new Error("Thiếu Base URL cho nhà cung cấp OpenAI-compatible.");
-      const apiMessages = [];
-      if (systemPrompt) apiMessages.push({ role: "system", content: systemPrompt });
-      messages.forEach(m => apiMessages.push({ role: m.role === "assistant" ? "assistant" : "user", content: m.text }));
-      const res = await fetch(`${baseUrl}/chat/completions`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${apiKey}`
-        },
-        body: JSON.stringify({ model, messages: apiMessages, temperature: 0.4 }),
-        signal
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        const msg = data?.error?.message || `HTTP ${res.status}`;
-        throw new Error(`Lỗi API (${res.status}): ${msg}`);
-      }
-      const reply = data?.choices?.[0]?.message?.content || "";
-      if (!reply) throw new Error("API không trả về nội dung phản hồi.");
-      return reply;
-    }
-
-    if (provider === "ollama") {
-      const apiMessages = [];
-      if (systemPrompt) apiMessages.push({ role: "system", content: systemPrompt });
-      messages.forEach(m => apiMessages.push({ role: m.role === "assistant" ? "assistant" : "user", content: m.text }));
-      const res = await fetch(`${baseUrl}/api/chat`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ model, messages: apiMessages, stream: false }),
-        signal
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) {
-        throw new Error(`Lỗi Ollama (${res.status}): ${data?.error || "Không rõ nguyên nhân"}`);
-      }
-      const reply = data?.message?.content || "";
-      if (!reply) throw new Error("Ollama không trả về nội dung phản hồi.");
-      return reply;
-    }
-
-    throw new Error("Nhà cung cấp AI không được hỗ trợ.");
-  } catch (err) {
-    if (err.name === "AbortError") throw err;
-    if (err instanceof TypeError) {
-      const tip = provider === "ollama"
-        ? "Hãy đảm bảo Ollama đang chạy và đã bật OLLAMA_ORIGINS=\"*\" nếu mở file HTML trực tiếp."
-        : "Kiểm tra kết nối mạng, Base URL hoặc chính sách CORS của trình duyệt.";
-      throw new Error(`Không kết nối được tới máy chủ AI. ${tip}`);
-    }
-    throw err;
-  }
-}
-
-function renderAiInlineForQuestion(q, isExam, isRevealed, chosenArr) {
-  const bar = document.getElementById("aiInlineBar");
-  const box = document.getElementById("aiExplainBox");
-  const btn = document.getElementById("btnAiExplain");
-  if (!bar || !box || !btn) return;
-
-  if ((q ? q.id : null) !== state.lastRenderedQuestionId) {
-    if (state.aiExplainAbort) {
-      state.aiExplainAbort.abort();
-      state.aiExplainAbort = null;
-    }
-    state.lastRenderedQuestionId = q ? q.id : null;
-  }
-
-  if (!q || (isExam && !state.exam.submitted)) {
-    bar.style.display = "none";
-    box.style.display = "none";
-    return;
-  }
-
-  bar.style.display = "flex";
-  btn.textContent = isRevealed ? "✨ AI Giải thích chi tiết" : "💡 AI Gợi ý cách làm";
-
-  const cacheKey = `${q.id}_${isRevealed ? "explain" : "hint"}_${(chosenArr || []).slice().sort((a,b)=>a-b).join(",")}`;
-  const cached = state.aiExplainCache[cacheKey];
-  if (cached) {
-    showAiExplainContent(cached, isRevealed);
-  } else {
-    box.style.display = "none";
-    box.innerHTML = "";
-  }
-}
-
-function showAiExplainContent(markdownText, isRevealed) {
-  const box = document.getElementById("aiExplainBox");
-  box.style.display = "block";
-  const title = isRevealed ? "✨ Giải thích chi tiết từ AI" : "💡 Gợi ý từ AI (chưa lộ đáp án)";
-  box.innerHTML = `
-    <div class="ai-explain-header">
-      <span>${title}</span>
-      <div class="ai-mini-actions">
-        <button type="button" id="btnAiRegenExplain">↻ Tạo lại</button>
-        <button type="button" id="btnAiHideExplain">✕ Ẩn</button>
-      </div>
-    </div>
-    ${renderMarkdownSafe(markdownText)}
-  `;
-  document.getElementById("btnAiRegenExplain").onclick = () => explainCurrentQuestion(true);
-  document.getElementById("btnAiHideExplain").onclick = () => { box.style.display = "none"; };
-}
-
-async function explainCurrentQuestion(forceRefresh = false, { silentIfUnconfigured = false } = {}) {
-  const info = getCurrentQuestionInfo();
-  if (!info) return;
-  const { q, isExam, isRevealed, chosenArr } = info;
-  if (isExam && !state.exam.submitted) return;
-
-  if (!isAiConfigured()) {
-    if (!silentIfUnconfigured) {
-      openAiSettingsModal("Vui lòng nhập API Key (hoặc cấu hình Ollama) trước khi dùng tính năng AI.");
-    } else {
-      const box = document.getElementById("aiExplainBox");
-      box.style.display = "block";
-      box.innerHTML = `<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;"><span>⚠️ Chưa có API Key AI trên trang này (chấm cạnh <strong>Cài đặt AI</strong> đang màu xám) nên AI chưa thể tự động giải.</span><button type="button" class="primary" id="btnAiQuickSetup">⚙️ Nhập API Key ngay</button></div>`;
-      document.getElementById("btnAiQuickSetup").onclick = () => openAiSettingsModal("Vui lòng nhập API Key (hoặc cấu hình Ollama) rồi bấm Lưu cài đặt.");
-    }
-    return;
-  }
-
-  const cacheKey = `${q.id}_${isRevealed ? "explain" : "hint"}_${(chosenArr || []).slice().sort((a,b)=>a-b).join(",")}`;
-  if (!forceRefresh && state.aiExplainCache[cacheKey]) {
-    showAiExplainContent(state.aiExplainCache[cacheKey], isRevealed);
-    return;
-  }
-
-  if (state.aiExplainAbort) state.aiExplainAbort.abort();
-  const controller = new AbortController();
-  state.aiExplainAbort = controller;
-
-  const box = document.getElementById("aiExplainBox");
-  const btn = document.getElementById("btnAiExplain");
-  btn.disabled = true;
-  box.style.display = "block";
-  box.innerHTML = `<em>⏳ AI đang phân tích câu hỏi...</em>`;
-
-  const systemPrompt = isRevealed
-    ? "Bạn là trợ giảng môn Nguyên lý Hệ điều hành (Operating Systems) bằng tiếng Việt. Hãy giải thích ngắn gọn, rõ ràng, chính xác vì sao đáp án đúng là đúng, giải thích lỗi sai ở các phương án khác (đặc biệt nếu người dùng chọn sai), và trình bày từng bước tính toán nếu là bài tập (lập lịch CPU, Banker, phân trang/TLB, thay thế trang, fork()...). Nếu đề gốc có ghi chú lưu ý key bị tô nhầm, hãy giải thích rõ bản chất."
-    : "Bạn là trợ giảng môn Nguyên lý Hệ điều hành (Operating Systems) bằng tiếng Việt. Người dùng CHƯA chọn đáp án, hãy chỉ đưa ra gợi ý tư duy, khái niệm cốt lõi hoặc công thức cần dùng để họ tự làm, TUYỆT ĐỐI KHÔNG tiết lộ trực tiếp đáp án đúng là phương án nào.";
-
-  const userPrompt = isRevealed
-    ? `Hãy giải thích chi tiết câu hỏi sau:\n\n${buildQuestionContext(q, true, chosenArr)}`
-    : `Hãy gợi ý cách suy luận/làm câu hỏi sau mà không làm lộ đáp án:\n\n${buildQuestionContext(q, false, chosenArr)}`;
-
-  try {
-    const reply = await callAI([{ role: "user", text: userPrompt }], { systemPrompt, signal: controller.signal });
-    state.aiExplainCache[cacheKey] = reply;
-    const latest = getCurrentQuestionInfo();
-    if (latest && latest.q.id === q.id) {
-      showAiExplainContent(reply, isRevealed);
-    }
-  } catch (err) {
-    if (err.name === "AbortError") return;
-    box.innerHTML = `<div style="color:var(--danger);">⚠️ ${escapeHtml(err.message)}</div>`;
-  } finally {
-    btn.disabled = false;
-  }
-}
-
-// AI Settings Modal Logic
-function syncProviderFields(provider, keepValues = false) {
-  const baseGroup = document.getElementById("aiBaseUrlGroup");
-  const keyGroup = document.getElementById("aiApiKeyGroup");
-  const baseInput = document.getElementById("aiBaseUrl");
-  const modelInput = document.getElementById("aiModel");
-  const presetBox = document.getElementById("aiModelPresets");
-
-  baseGroup.style.display = (provider === "openai" || provider === "ollama") ? "block" : "none";
-  keyGroup.style.display = provider === "ollama" ? "none" : "block";
-  document.getElementById("aiUrlPresets").style.display = provider === "openai" ? "flex" : "none";
-
-  const def = AI_DEFAULTS[provider] || AI_DEFAULTS.gemini;
-  if (!keepValues) {
-    baseInput.value = def.baseUrl;
-    modelInput.value = def.model;
-  } else {
-    if (!baseInput.value) baseInput.value = def.baseUrl;
-    if (!modelInput.value) modelInput.value = def.model;
-  }
-
-  presetBox.innerHTML = "";
-  def.presets.forEach(m => {
-    const b = document.createElement("button");
-    b.type = "button";
-    b.textContent = m;
-    b.onclick = () => { modelInput.value = m; };
-    presetBox.appendChild(b);
-  });
-}
-
-function openAiSettingsModal(feedbackMsg = "") {
-  document.getElementById("aiProvider").value = aiConfig.provider || "gemini";
-  document.getElementById("aiBaseUrl").value = aiConfig.baseUrl || "";
-  document.getElementById("aiModel").value = aiConfig.model || "";
-  document.getElementById("aiApiKey").value = aiConfig.apiKey || "";
-  syncProviderFields(document.getElementById("aiProvider").value, true);
-  const fb = document.getElementById("aiSettingsFeedback");
-  fb.style.color = feedbackMsg ? "var(--warning)" : "var(--text-muted)";
-  fb.textContent = feedbackMsg;
-  document.getElementById("aiSettingsModal").classList.add("open");
-}
-
-function readAiSettingsForm() {
-  return {
-    provider: document.getElementById("aiProvider").value,
-    baseUrl: document.getElementById("aiBaseUrl").value.trim(),
-    model: document.getElementById("aiModel").value.trim(),
-    apiKey: document.getElementById("aiApiKey").value.trim()
-  };
-}
-
-// AI Chat Drawer Logic
-function updateAiContextBar(q) {
-  const pill = document.getElementById("aiContextPill");
-  const chk = document.getElementById("chkAiAttachQuestion");
-  if (!pill || !chk) return;
-  const inActiveExam = state.mode === "exam" && !state.exam.submitted;
-  if (!q) {
-    pill.textContent = "Không có câu hỏi";
-    chk.disabled = true;
-  } else if (inActiveExam) {
-    pill.textContent = "Ẩn khi đang thi thử";
-    chk.disabled = true;
-  } else {
-    pill.textContent = `Câu gốc #${q.num}`;
-    chk.disabled = false;
-  }
-}
-
-function openAiDrawer(prefillPrompt = "") {
-  document.getElementById("aiDrawerBackdrop").classList.add("open");
-  updateAiContextBar(state.deck[state.currentIndex]);
-  renderAiChatMessages();
-  const input = document.getElementById("aiChatInput");
-  if (prefillPrompt) input.value = prefillPrompt;
-  setTimeout(() => input.focus(), 50);
-}
-
-function renderAiChatMessages() {
-  const container = document.getElementById("aiChatMessages");
-  if (!container) return;
-  if (!state.aiChatHistory.length) {
-    container.innerHTML = `
-      <div class="ai-msg assistant">
-        <div class="ai-md">
-          <p>Xin chào! Mình là <strong>Trợ giảng AI môn Nguyên lý Hệ điều hành</strong>.</p>
-          <p>Bạn có thể hỏi mình bất kỳ điều gì về câu hỏi đang xem (lập lịch CPU, <code>fork()</code>, Deadlock/Banker, phân trang, TLB, bộ nhớ ảo...) hoặc bấm các gợi ý bên dưới.</p>
-          ${isAiConfigured() ? "" : "<p>⚠️ <em>Bạn chưa nhập API Key — hãy bấm nút ⚙️ ở trên để cấu hình nhé.</em></p>"}
-        </div>
-      </div>
-    `;
-    return;
-  }
-  container.innerHTML = "";
-  state.aiChatHistory.forEach(msg => {
-    const div = document.createElement("div");
-    div.className = `ai-msg ${msg.role}`;
-    if (msg.role === "user") {
-      div.textContent = msg.text;
-    } else if (msg.role === "error") {
-      div.textContent = `⚠️ ${msg.text}`;
-    } else {
-      div.innerHTML = renderMarkdownSafe(msg.text);
-    }
-    container.appendChild(div);
-  });
-  container.scrollTop = container.scrollHeight;
-}
-
-async function sendAiChatMessage(customText = null) {
-  if (state.aiChatBusy) return;
-  const input = document.getElementById("aiChatInput");
-  const text = (customText !== null ? customText : input.value).trim();
-  if (!text) return;
-
-  if (!isAiConfigured()) {
-    openAiSettingsModal("Vui lòng cấu hình API Key hoặc Ollama trước khi trò chuyện với AI.");
-    return;
-  }
-
-  if (customText === null) input.value = "";
-  state.aiChatHistory.push({ role: "user", text });
-  renderAiChatMessages();
-
-  const container = document.getElementById("aiChatMessages");
-  const typingEl = document.createElement("div");
-  typingEl.className = "ai-msg assistant";
-  typingEl.innerHTML = "<em>⏳ Đang suy nghĩ...</em>";
-  container.appendChild(typingEl);
-  container.scrollTop = container.scrollHeight;
-
-  state.aiChatBusy = true;
-  document.getElementById("btnSendAiChat").disabled = true;
-
-  let systemPrompt = "Bạn là trợ giảng môn Nguyên lý Hệ điều hành (Operating Systems), trả lời bằng tiếng Việt rõ ràng, chính xác, súc tích và dễ hiểu.";
-  const info = getCurrentQuestionInfo();
-  const attachChk = document.getElementById("chkAiAttachQuestion");
-  const canAttach = info && attachChk.checked && !(state.mode === "exam" && !state.exam.submitted);
-  if (canAttach) {
-    systemPrompt += `\n\nNgữ cảnh câu hỏi người dùng đang xem:\n${buildQuestionContext(info.q, info.isRevealed, info.chosenArr)}`;
-    if (!info.isRevealed) {
-      systemPrompt += "\n(Lưu ý: người dùng chưa mở đáp án ở câu này; nếu họ không trực tiếp yêu cầu đáp án, hãy ưu tiên hướng dẫn cách tư duy.)";
-    }
-  }
-
-  const convo = state.aiChatHistory
-    .filter(m => m.role === "user" || m.role === "assistant")
-    .slice(-12);
-
-  try {
-    state.aiChatAbort = new AbortController();
-    const reply = await callAI(convo, { systemPrompt, signal: state.aiChatAbort.signal });
-    state.aiChatHistory.push({ role: "assistant", text: reply });
-  } catch (err) {
-    if (err.name !== "AbortError") {
-      state.aiChatHistory.push({ role: "error", text: err.message });
-    }
-  } finally {
-    state.aiChatBusy = false;
-    document.getElementById("btnSendAiChat").disabled = false;
-    renderAiChatMessages();
-  }
-}
-
-// AI Event Listeners
-document.getElementById("btnAiExplain").onclick = () => explainCurrentQuestion(false);
-document.getElementById("chkAutoAiExplain").addEventListener("change", e => {
-  localStorage.setItem(AI_AUTO_KEY, e.target.checked ? "true" : "false");
-  const info = getCurrentQuestionInfo();
-  if (e.target.checked && info && info.isRevealed && isAiConfigured()) {
-    explainCurrentQuestion(false, { silentIfUnconfigured: true });
-  }
-});
-document.getElementById("btnAiAskChat").onclick = () => {
-  const info = getCurrentQuestionInfo();
-  openAiDrawer();
-  if (info && !state.aiChatHistory.length) {
-    // Ready for user question with current question attached
-  }
-};
-document.getElementById("btnOpenAiChat").onclick = () => openAiDrawer();
-document.getElementById("btnAiSettings").onclick = () => openAiSettingsModal();
-document.getElementById("btnDrawerAiSettings").onclick = () => openAiSettingsModal();
-document.getElementById("btnCloseAiSettings").onclick = () => document.getElementById("aiSettingsModal").classList.remove("open");
-document.getElementById("btnCloseAiDrawer").onclick = () => document.getElementById("aiDrawerBackdrop").classList.remove("open");
-document.getElementById("aiDrawerBackdrop").addEventListener("click", e => {
-  if (e.target === e.currentTarget) e.currentTarget.classList.remove("open");
-});
-
-document.getElementById("aiProvider").addEventListener("change", e => {
-  syncProviderFields(e.target.value, false);
-});
-
-document.querySelectorAll("#aiUrlPresets button").forEach(btn => {
-  btn.onclick = () => {
-    document.getElementById("aiBaseUrl").value = btn.dataset.url;
-    document.getElementById("aiModel").value = btn.dataset.model;
-  };
-});
-
-document.getElementById("btnToggleApiKey").onclick = () => {
-  const inp = document.getElementById("aiApiKey");
-  inp.type = inp.type === "password" ? "text" : "password";
-};
-
-document.getElementById("btnSaveAiConfig").onclick = () => {
-  aiConfig = readAiSettingsForm();
-  saveAiConfigToStorage();
-  const fb = document.getElementById("aiSettingsFeedback");
-  fb.style.color = "var(--success)";
-  fb.textContent = "✔ Đã lưu cài đặt AI vào trình duyệt.";
-};
-
-document.getElementById("btnTestAiConfig").onclick = async () => {
-  const prev = { ...aiConfig };
-  aiConfig = readAiSettingsForm();
-  const fb = document.getElementById("aiSettingsFeedback");
-  fb.style.color = "var(--text-muted)";
-  fb.textContent = "⏳ Đang kiểm tra kết nối...";
-  try {
-    const res = await callAI([{ role: "user", text: "Trả lời ngắn gọn 1 câu: Xin chào, tôi đã sẵn sàng hỗ trợ môn Hệ điều hành." }]);
-    saveAiConfigToStorage();
-    fb.style.color = "var(--success)";
-    fb.textContent = `✔ Kết nối thành công! (${res.slice(0, 80)})`;
-  } catch (err) {
-    aiConfig = prev;
-    updateAiStatusUI();
-    fb.style.color = "var(--danger)";
-    fb.textContent = `✘ ${err.message}`;
-  }
-};
-
-function scoreGeminiModel(name) {
-  const n = name.toLowerCase();
-  if (/^gemini-4/.test(n)) return 5000 + (/hydrogen/.test(n) ? 50 : 0) + (/pro/.test(n) ? 80 : 0);
-  const m3 = n.match(/^gemini-3(?:\.(\d+))?/);
-  if (m3) {
-    const minor = parseInt(m3[1] || "0", 10);
-    const tier = /pro/.test(n) ? 30 : (/flash-lite/.test(n) ? 10 : 20);
-    const stable = /preview/.test(n) ? 0 : 5;
-    return 4000 + minor * 50 + tier + stable;
-  }
-  if (/^gemini-.*-latest$/.test(n)) {
-    return 3000 + (/pro/.test(n) ? 30 : (/flash-lite/.test(n) ? 10 : 20));
-  }
-  if (/^gemini-2\.5/.test(n)) {
-    return 2000 + (/pro/.test(n) ? 30 : (/flash-lite/.test(n) ? 10 : 20));
-  }
-  if (/^gemini-/.test(n)) return 1000;
-  if (/^gemma-/.test(n)) return 500;
-  return 100;
-}
-
-document.getElementById("btnFetchModels").onclick = async () => {
-  const cfg = readAiSettingsForm();
-  const fb = document.getElementById("aiSettingsFeedback");
-  const presetBox = document.getElementById("aiModelPresets");
-  const modelInput = document.getElementById("aiModel");
-
-  if (cfg.provider !== "ollama" && !cfg.apiKey) {
-    fb.style.color = "var(--warning)";
-    fb.textContent = "Hãy nhập API Key trước rồi bấm Tải DS model.";
-    return;
-  }
-
-  fb.style.color = "var(--text-muted)";
-  fb.textContent = "⏳ Đang tải danh sách model khả dụng...";
-
-  try {
-    let models = [];
-    if (cfg.provider === "gemini") {
-      let pageToken = "";
-      let allItems = [];
-      for (let page = 0; page < 5; page++) {
-        const qs = new URLSearchParams({ pageSize: "200", key: cfg.apiKey });
-        if (pageToken) qs.set("pageToken", pageToken);
-        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?${qs.toString()}`);
-        const data = await res.json().catch(() => ({}));
-        if (!res.ok) throw new Error(data?.error?.message || `HTTP ${res.status}`);
-        allItems = allItems.concat(data.models || []);
-        if (!data.nextPageToken) break;
-        pageToken = data.nextPageToken;
-      }
-      const skipRe = /(-tts|-image|imagen|veo|lyria|robotics|computer-use|native-audio|deep-research|embedding|aqa)/i;
-      models = allItems
-        .filter(m => (m.supportedGenerationMethods || []).includes("generateContent"))
-        .map(m => String(m.name || "").replace(/^models\//, ""))
-        .filter(id => id && !skipRe.test(id))
-        .sort((a, b) => scoreGeminiModel(b) - scoreGeminiModel(a) || a.localeCompare(b));
-    } else if (cfg.provider === "openai") {
-      const base = (cfg.baseUrl || AI_DEFAULTS.openai.baseUrl).replace(/\/+$/, "");
-      const res = await fetch(`${base}/models`, {
-        headers: { "Authorization": `Bearer ${cfg.apiKey}` }
-      });
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(data?.error?.message || `HTTP ${res.status}`);
-      models = (data.data || []).map(m => m.id).filter(Boolean).slice(0, 30);
-    } else if (cfg.provider === "ollama") {
-      const base = (cfg.baseUrl || AI_DEFAULTS.ollama.baseUrl).replace(/\/+$/, "");
-      const res = await fetch(`${base}/api/tags`);
-      const data = await res.json().catch(() => ({}));
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      models = (data.models || []).map(m => m.name).filter(Boolean);
-    }
-
-    if (!models.length) throw new Error("Không tìm thấy model phù hợp.");
-    presetBox.innerHTML = "";
-    models.forEach(m => {
-      const b = document.createElement("button");
-      b.type = "button";
-      b.textContent = m;
-      b.onclick = () => { modelInput.value = m; };
-      presetBox.appendChild(b);
-    });
-    fb.style.color = "var(--success)";
-    fb.textContent = `✔ Đã tải ${models.length} model chat (đã xếp model mới nhất lên đầu). Hãy bấm chọn 1 model hoặc kiểm tra kết nối.`;
-  } catch (err) {
-    fb.style.color = "var(--danger)";
-    fb.textContent = `✘ Không tải được danh sách model: ${err.message}`;
-  }
-};
-
-document.getElementById("btnClearAiConfig").onclick = () => {
-  localStorage.removeItem(AI_CONFIG_KEY);
-  aiConfig = { provider: "gemini", baseUrl: "", model: "gemini-3.8-flash", apiKey: "" };
-  document.getElementById("aiApiKey").value = "";
-  updateAiStatusUI();
-  const fb = document.getElementById("aiSettingsFeedback");
-  fb.style.color = "var(--text-muted)";
-  fb.textContent = "Đã xóa API Key khỏi trình duyệt.";
-};
-
-document.getElementById("btnClearAiChat").onclick = () => {
-  state.aiChatHistory = [];
-  renderAiChatMessages();
-};
-
-document.getElementById("btnSendAiChat").onclick = () => sendAiChatMessage();
-document.getElementById("aiChatInput").addEventListener("keydown", e => {
-  if (e.key === "Enter" && !e.shiftKey) {
-    e.preventDefault();
-    sendAiChatMessage();
-  }
-});
-
-document.querySelectorAll("#aiQuickChips .ai-chip").forEach(chip => {
-  chip.onclick = () => sendAiChatMessage(chip.dataset.prompt);
-});
-
 // Init
 loadStorage();
-loadAiConfig();
 initTopicSelects();
 applyPracticeFilter();
 </script>
