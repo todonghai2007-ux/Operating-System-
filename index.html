@@ -833,6 +833,10 @@
       <div class="ai-inline-bar" id="aiInlineBar" style="display:none;">
         <button class="ai-btn" id="btnAiExplain">✨ AI Giải thích chi tiết</button>
         <button id="btnAiAskChat">💬 Hỏi tiếp Trợ giảng AI</button>
+        <label class="checkbox-row" style="margin:0 0 0 auto;font-size:0.84rem;color:var(--text-muted);" title="Tự động gọi AI giải thích ngay sau khi bạn kiểm tra đáp án">
+          <input type="checkbox" id="chkAutoAiExplain" />
+          <span>Tự động AI giải khi kiểm tra</span>
+        </label>
       </div>
       <div class="ai-explain-box" id="aiExplainBox" style="display:none;"></div>
 
@@ -1336,6 +1340,9 @@ function checkPracticeQuestion(q) {
   updateStats();
   renderQuestion();
   renderNav();
+  if (isAutoAiExplainEnabled() && isAiConfigured()) {
+    explainCurrentQuestion(false, { silentIfUnconfigured: true });
+  }
 }
 
 function renderAll() {
@@ -1393,6 +1400,9 @@ document.getElementById("btnRevealFlash").onclick = () => {
   if (!q) return;
   state.practiceRevealed[q.id] = true;
   renderQuestion();
+  if (isAutoAiExplainEnabled() && isAiConfigured()) {
+    explainCurrentQuestion(false, { silentIfUnconfigured: true });
+  }
 };
 
 document.getElementById("btnFlashRight").onclick = () => {
@@ -1497,6 +1507,7 @@ document.addEventListener("keydown", e => {
 
 // ================= AI INTEGRATION =================
 const AI_CONFIG_KEY = "nlhdh_ai_config_v1";
+const AI_AUTO_KEY = "nlhdh_ai_auto_explain_v1";
 const AI_DEFAULTS = {
   gemini: {
     baseUrl: "",
@@ -1513,6 +1524,11 @@ state.aiChatHistory = [];
 state.aiChatBusy = false;
 state.aiExplainAbort = null;
 state.aiChatAbort = null;
+state.lastRenderedQuestionId = null;
+
+function isAutoAiExplainEnabled() {
+  return localStorage.getItem(AI_AUTO_KEY) !== "false";
+}
 
 function loadAiConfig() {
   try {
@@ -1522,6 +1538,8 @@ function loadAiConfig() {
       aiConfig = { ...aiConfig, ...parsed };
     }
   } catch (e) {}
+  const chkAuto = document.getElementById("chkAutoAiExplain");
+  if (chkAuto) chkAuto.checked = isAutoAiExplainEnabled();
   updateAiStatusUI();
 }
 
@@ -1767,6 +1785,14 @@ function renderAiInlineForQuestion(q, isExam, isRevealed, chosenArr) {
   const btn = document.getElementById("btnAiExplain");
   if (!bar || !box || !btn) return;
 
+  if ((q ? q.id : null) !== state.lastRenderedQuestionId) {
+    if (state.aiExplainAbort) {
+      state.aiExplainAbort.abort();
+      state.aiExplainAbort = null;
+    }
+    state.lastRenderedQuestionId = q ? q.id : null;
+  }
+
   if (!q || (isExam && !state.exam.submitted)) {
     bar.style.display = "none";
     box.style.display = "none";
@@ -1804,14 +1830,16 @@ function showAiExplainContent(markdownText, isRevealed) {
   document.getElementById("btnAiHideExplain").onclick = () => { box.style.display = "none"; };
 }
 
-async function explainCurrentQuestion(forceRefresh = false) {
+async function explainCurrentQuestion(forceRefresh = false, { silentIfUnconfigured = false } = {}) {
   const info = getCurrentQuestionInfo();
   if (!info) return;
   const { q, isExam, isRevealed, chosenArr } = info;
   if (isExam && !state.exam.submitted) return;
 
   if (!isAiConfigured()) {
-    openAiSettingsModal("Vui lòng nhập API Key (hoặc cấu hình Ollama) trước khi dùng tính năng AI.");
+    if (!silentIfUnconfigured) {
+      openAiSettingsModal("Vui lòng nhập API Key (hoặc cấu hình Ollama) trước khi dùng tính năng AI.");
+    }
     return;
   }
 
@@ -2021,6 +2049,13 @@ async function sendAiChatMessage(customText = null) {
 
 // AI Event Listeners
 document.getElementById("btnAiExplain").onclick = () => explainCurrentQuestion(false);
+document.getElementById("chkAutoAiExplain").addEventListener("change", e => {
+  localStorage.setItem(AI_AUTO_KEY, e.target.checked ? "true" : "false");
+  const info = getCurrentQuestionInfo();
+  if (e.target.checked && info && info.isRevealed && isAiConfigured()) {
+    explainCurrentQuestion(false, { silentIfUnconfigured: true });
+  }
+});
 document.getElementById("btnAiAskChat").onclick = () => {
   const info = getCurrentQuestionInfo();
   openAiDrawer();
